@@ -4,7 +4,7 @@ import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders'; 
-import { setToken } from './api/axios';
+import { setToken } from './api/axios.js';
 import AddProduct from './pages/AddProduct';
 
 const token = localStorage.getItem('token');

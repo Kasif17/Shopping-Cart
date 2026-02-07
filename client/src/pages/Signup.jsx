@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import api from '../api/axios';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import api, { setToken } from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const signup = async () => {
     try {
-      await api.post('/users/register', { username, password });
-      alert('Account created successfully 🎉');
-      navigate('/');
-    } catch {
-      alert('User already exists. Please sign in.');
+      const res = await api.post("/users/register", { username, password });
+
+      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
+
+      alert("Account created successfully 🎉");
+      navigate("/home");
+    } catch (err) {
+      alert("User already exists. Please sign in.");
     }
   };
 
