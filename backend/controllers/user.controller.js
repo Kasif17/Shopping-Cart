@@ -19,19 +19,28 @@ export const registerUser = async (req, res) => {
         message: 'User already exists'
       });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       username,
       password: hashedPassword
     });
+    
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    user.token = token;
+    await user.save();
 
     res.status(201).json({
       message: 'User created successfully',
-      user: {
-        id: user._id,
-        username: user.username
-      }
+      token
     });
+
   } catch (error) {
     res.status(500).json({
       message: 'Server error while creating user'
