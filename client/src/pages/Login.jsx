@@ -25,8 +25,6 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black flex items-center justify-center">
       <div className="bg-black/80 backdrop-blur-md rounded-lg shadow-2xl p-10 w-full max-w-md border border-gray-800">
-        
-        {/* Brand */}
         <h1 className="text-4xl font-extrabold text-red-600 text-center tracking-wide">
           Welcome to Shopping Cart ! 
         </h1>
@@ -34,8 +32,6 @@ export default function Login() {
         <p className="text-center text-gray-400 mt-2 mb-8">
           Sign in to continue
         </p>
-
-        {/* Inputs */}
         <div className="space-y-4">
           <input
             className="w-full bg-gray-800 text-white border border-gray-700 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-600"
@@ -57,8 +53,6 @@ export default function Login() {
             Sign In
           </button>
         </div>
-
-        {/* Footer */}
         <p className="text-sm text-gray-400 mt-6 text-center">
           New to our platform?
           <span

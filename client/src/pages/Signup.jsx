@@ -21,7 +21,6 @@ export default function Signup() {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black flex items-center justify-center">
       <div className="bg-black/80 backdrop-blur-md rounded-lg shadow-2xl p-10 w-full max-w-md border border-gray-800">
 
-        {/* Brand */}
         <h1 className="text-4xl font-extrabold text-red-600 text-center tracking-wide">
          Welcome! to Shopping Cart
         </h1>

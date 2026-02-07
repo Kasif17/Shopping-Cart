@@ -49,7 +49,6 @@ export default function Orders() {
                 key={order._id}
                 className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6"
               >
-                {/* Order Header */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wide">
@@ -66,8 +65,6 @@ export default function Orders() {
                 </div>
 
                 <hr className="border-gray-800 mb-6" />
-
-                {/* Order Items */}
                 <div className="space-y-4">
                   {order.items.map((item, i) => (
                     <div
