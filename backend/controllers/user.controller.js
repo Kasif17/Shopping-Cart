@@ -2,81 +2,41 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.model.js';
 
-
 export const registerUser = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({
-        message: 'Username and password are required'
-      });
-    }
-
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(409).json({
-        message: 'User already exists'
-      });
+      return res.status(409).json({ message: 'User already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       username,
-      password: hashedPassword
-    });
-    
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
-    );
-
-    user.token = token;
-    await user.save();
-
-    res.status(201).json({
-      message: 'User created successfully',
-      token
+      password: hashedPassword,
+      token: null
     });
 
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server error while creating user'
-    });
+    res.status(201).json({ message: 'User created successfully' });
+  } catch {
+    res.status(500).json({ message: 'Registration failed' });
   }
 };
-
 
 export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({
-        message: 'Username and password are required'
-      });
-    }
-
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({
-        message: 'Invalid username/password'
-      });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    if (user.token) {
-      return res.status(403).json({
-        message: 'User already logged in on another device'
-      });
-    }
-
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(400).json({
-        message: 'Invalid username/password'
-      });
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = jwt.sign(
@@ -88,29 +48,14 @@ export const loginUser = async (req, res) => {
     user.token = token;
     await user.save();
 
-    res.json({
-      message: 'Login successful',
-      token
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server error during login'
-    });
+    res.json({ token });
+  } catch {
+    res.status(500).json({ message: 'Login failed' });
   }
 };
 
-
 export const logoutUser = async (req, res) => {
-  try {
-    req.user.token = null;
-    await req.user.save();
-
-    res.json({
-      message: 'Logged out successfully'
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server error during logout'
-    });
-  }
+  req.user.token = null;
+  await req.user.save();
+  res.json({ message: 'Logged out successfully' });
 };
